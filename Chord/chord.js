@@ -59,7 +59,7 @@ function groupTicks(d, step) {
   
     const groupTick = group.append("g")
       .selectAll("g")
-      .data(d => groupTicks(d, 1e3))
+      .data(d => groupTicks(d, 1))
       .join("g")
         .attr("transform", d => `rotate(${d.angle * 180 / Math.PI - 90}) translate(${outerRadius},0)`);
   
@@ -68,7 +68,6 @@ function groupTicks(d, step) {
         .attr("x2", 6);
   
     groupTick
-      .filter(d => d.value % 5e3 === 0)
       .append("text")
         .attr("x", 8)
         .attr("dy", ".35em")
