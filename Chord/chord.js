@@ -4,10 +4,16 @@ outerRadius = Math.min(width, height) * 0.5 - 30
 innerRadius = outerRadius - 20
     
 data = [
-    [ 0, 1, 0, 0],
-    [ 0.3, 0, 0.3, 0.3],
-    [ 0, 1, 0, 0],
-    [ 0, 1, 0, 0]
+    [ 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 ], //Lannister
+    [ 1, 0, 0, 0, 0, 3, 0, 0, 0, 0 ], //Baratheon
+    [ 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 ], //Targaryen
+    [ 0.5, 0, 1, 0, 1, 0, 0.5, 1, 0, 0 ], //Stark
+    [ 0, 0, 0, 1, 0, 0, 0, 0, 1, 0 ], //Tully
+    [ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 ], //Tyrell
+    [ 0, 0, 0, 1, 0, 0, 0, 0, 1, 0 ], //Bolton
+    [ 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 ], //Maegyr
+    [ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0 ], //Frey
+    [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 ]  //Martell
   ]
 
 function groupTicks(d, step) {
@@ -17,7 +23,7 @@ function groupTicks(d, step) {
     });
   }
 
-  formatValue = d3.formatPrefix(",.0", 1e0)
+  formatValue = d3.formatPrefix(",.0", 1)
 
   chord = d3.chord()
     .padAngle(0.05)
@@ -31,8 +37,8 @@ function groupTicks(d, step) {
     .radius(innerRadius)
 
     color = d3.scaleOrdinal()
-    .domain(d3.range(4))
-    .range(["#000000", "#FFDD89", "#957244", "#F26223"])
+    .domain(d3.range(10))
+    .range(["#FF0000", "#000000", "#FFFFFF", "#6E6E6E", "#0000FF", "#00FF00", "#610B0B", "#CC2EFA", "#0B3B0B", "#F4FA58"])
     
     const svg = d3.select("svg")
         .attr("viewBox", [-width / 2, -height / 2, width, height])
@@ -78,3 +84,33 @@ function groupTicks(d, step) {
         .attr("d", ribbon)
         .attr("fill", d => color(d.target.index))
         .attr("stroke", d => d3.rgb(color(d.target.index)).darker());
+    
+    var legend = svg.append("g")
+        .attr("class","legend")
+        .attr("x", -500)
+        .attr("y", -500)
+        .attr("height", 1000)
+        .attr("width", 100);
+
+  legend.append("rect").attr("x", -500+5).attr("y", -500+5).attr("width", 17).attr("height", 14).style("fill", "Red");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+25).attr("width", 17).attr("height", 14).style("fill", "Black");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+45).attr("width", 17).attr("height", 14).style("fill", "White");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+65).attr("width", 17).attr("height", 14).style("fill", "#6E6E6E"); //"#6E6E6E", "#0000FF", "#00FF00", "#610B0B", "#CC2EFA", "#0B3B0B", "#F4FA58"
+  legend.append("rect").attr("x", -500+5).attr("y", -500+85).attr("width", 17).attr("height", 14).style("fill", "#0000FF");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+105).attr("width", 17).attr("height", 14).style("fill", "#00FF00");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+125).attr("width", 17).attr("height", 14).style("fill", "#610B0B");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+145).attr("width", 17).attr("height", 14).style("fill", "#CC2EFA");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+165).attr("width", 17).attr("height", 14).style("fill", "#0B3B0B");
+  legend.append("rect").attr("x", -500+5).attr("y", -500+185).attr("width", 17).attr("height", 14).style("fill", "#F4FA58");
+
+  legend.append("text").attr("x", -500+25).attr("y", -500+18).attr("size", "200").text("Lannister");
+  legend.append("text").attr("x", -500+25).attr("y", -500+38).attr("size", "200").text("Baratheon");
+  legend.append("text").attr("x", -500+25).attr("y", -500+58).attr("size", "200").text("Targaryen");
+  legend.append("text").attr("x", -500+25).attr("y", -500+78).attr("size", "200").text("Stark");
+  legend.append("text").attr("x", -500+25).attr("y", -500+98).attr("size", "200").text("Tully");
+  legend.append("text").attr("x", -500+25).attr("y", -500+118).attr("size", "200").text("Tyrell");
+  legend.append("text").attr("x", -500+25).attr("y", -500+138).attr("size", "200").text("Bolton");
+  legend.append("text").attr("x", -500+25).attr("y", -500+158).attr("size", "200").text("Maegyr");
+  legend.append("text").attr("x", -500+25).attr("y", -500+178).attr("size", "200").text("Frey");
+  legend.append("text").attr("x", -500+25).attr("y", -500+198).attr("size", "200").text("Martell");
+
