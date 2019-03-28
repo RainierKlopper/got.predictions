@@ -59,10 +59,6 @@ const yScale = d3.scaleLinear()
   .range([height, 0])
   .domain([0, 100]);
 
-// vertical grid lines
-// const makeXLines = () => d3.axisBottom()
-//   .scale(xScale)
-
 const makeYLines = () => d3.axisLeft()
   .scale(yScale)
 
@@ -74,15 +70,6 @@ chart.append('g')
 
 chart.append('g')
   .call(d3.axisLeft(yScale));
-
-// vertical grid lines
-// chart.append('g')
-//   .attr('class', 'grid')
-//   .attr('transform', `translate(0, ${height})`)
-//   .call(makeXLines()
-//     .tickSize(-height, 0, 0)
-//     .tickFormat('')
-//   )
 
 chart.append('g')
   .attr('class', 'grid')
