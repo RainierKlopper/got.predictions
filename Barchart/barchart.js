@@ -83,8 +83,7 @@ const barGroups = chart.selectAll()
   .enter()
   .append('g')
 
-barGroups
-  .append('rect')
+barGroups.append('rect')
   .attr('class', 'bar')
   .attr('x', (g) => xScale(g.house))
   .attr('y', (g) => yScale(g.value))
@@ -142,16 +141,14 @@ barGroups
     chart.selectAll('.divergence').remove()
   })
 
-barGroups
-  .append('text')
+barGroups.append('text')
   .attr('class', 'value')
   .attr('x', (a) => xScale(a.house) + xScale.bandwidth() / 2)
   .attr('y', (a) => yScale(a.value) - 2)
   .attr('text-anchor', 'middle')
   .text((a) => `${a.value}%`)
 
-svg
-  .append('text')
+svg.append('text')
   .attr('class', 'label')
   .attr('x', -(height / 2) - margin)
   .attr('y', margin / 2.4)
