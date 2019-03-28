@@ -1,6 +1,6 @@
 width = 1000
 height = 1000
-outerRadius = Math.min(width, height) * 0.5 - 30
+outerRadius = width * 0.5 - 30
 innerRadius = outerRadius - 20
     
 data = [
@@ -16,6 +16,7 @@ data = [
     [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 ]  //Martell
   ]
 
+//sets where and how much Ticks
 function groupTicks(d, step) {
     const k = (d.endAngle - d.startAngle) / d.value;
     return d3.range(0, d.value, step).map(value => {
@@ -23,59 +24,57 @@ function groupTicks(d, step) {
     });
   }
 
+  //sets Format (single, tens, thousands,...)
   formatValue = d3.formatPrefix(",.0", 1)
 
-  chord = d3.chord()
-    .padAngle(0.05)
-    .sortSubgroups(d3.descending)
 
-    arc = d3.arc()
-    .innerRadius(innerRadius)
+    const chord = d3.chord()
+    .padAngle(0.05)                     //distance between arc parts
+    .sortSubgroups(d3.descending)       //order of persons
+
+    const arc = d3.arc()                
+    .innerRadius(innerRadius)           //sets thickness of arc
     .outerRadius(outerRadius)
 
-    ribbon = d3.ribbon()
+    const ribbon = d3.ribbon()          //determines where the chords start/finish
     .radius(innerRadius)
 
-    color = d3.scaleOrdinal()
-    .domain(d3.range(10))
+    const color = d3.scaleOrdinal()     //sets color in order of data
     .range(["#FF0000", "#000000", "#FFFFFF", "#6E6E6E", "#0000FF", "#00FF00", "#610B0B", "#CC2EFA", "#0B3B0B", "#F4FA58"])
     
-    const svg = d3.select("svg")
-        .attr("viewBox", [-width / 2, -height / 2, width, height])
-        .attr("font-size", 10)
-        .attr("font-family", "sans-serif");
+    const svg = d3.select("svg")        //sets viewbox, because chord works with radius
+        .attr("viewBox", [-width / 2, -height / 2, width, height]);
   
-    const chords = chord(data);
+    const chords = chord(data);         //reads data from matrix
   
-    const group = svg.append("g")
+    const group = svg.append("g")       //sets houses to groups of chords
       .selectAll("g")
       .data(chords.groups)
       .join("g");
   
-    group.append("path")
+    group.append("path")                //sets color of arc parts
         .attr("fill", d => color(d.index))
         .attr("stroke", d => d3.rgb(color(d.index)).darker())
         .attr("d", arc);
   
-    const groupTick = group.append("g")
+    const groupTick = group.append("g") //sets the right position of the Ticks
       .selectAll("g")
-      .data(d => groupTicks(d, 1))
+      .data(d => groupTicks(d, 1))      //how often should they appear per house
       .join("g")
         .attr("transform", d => `rotate(${d.angle * 180 / Math.PI - 90}) translate(${outerRadius},0)`);
   
-    groupTick.append("line")
+    groupTick.append("line")            //small line from arc to number
         .attr("stroke", "#000")
         .attr("x2", 6);
   
-    groupTick
-      .append("text")
+    groupTick.append("text")            //sets number and when to rotate for readability
         .attr("x", 8)
         .attr("dy", ".35em")
         .attr("transform", d => d.angle > Math.PI ? "rotate(180) translate(-16)" : null)
         .attr("text-anchor", d => d.angle > Math.PI ? "end" : null)
         .text(d => formatValue(d.value));
   
-    svg.append("g")
+    svg.append("g")                     //sets chords opacity and color
         .attr("fill-opacity", 0.67)
       .selectAll("path")
       .data(chords)
@@ -84,7 +83,7 @@ function groupTicks(d, step) {
         .attr("fill", d => color(d.target.index))
         .attr("stroke", d => d3.rgb(color(d.target.index)).darker());
     
-    var legend = svg.append("g")
+    const legend = svg.append("g")      //adds a legend for the colors of the chord-diagramm
         .attr("class","legend")
         .attr("x", -500)
         .attr("y", -500)
@@ -94,7 +93,7 @@ function groupTicks(d, step) {
   legend.append("rect").attr("x", -500+5).attr("y", -500+5).attr("width", 17).attr("height", 14).style("fill", "Red");
   legend.append("rect").attr("x", -500+5).attr("y", -500+25).attr("width", 17).attr("height", 14).style("fill", "Black");
   legend.append("rect").attr("x", -500+5).attr("y", -500+45).attr("width", 17).attr("height", 14).style("fill", "White");
-  legend.append("rect").attr("x", -500+5).attr("y", -500+65).attr("width", 17).attr("height", 14).style("fill", "#6E6E6E"); //"#6E6E6E", "#0000FF", "#00FF00", "#610B0B", "#CC2EFA", "#0B3B0B", "#F4FA58"
+  legend.append("rect").attr("x", -500+5).attr("y", -500+65).attr("width", 17).attr("height", 14).style("fill", "#6E6E6E");
   legend.append("rect").attr("x", -500+5).attr("y", -500+85).attr("width", 17).attr("height", 14).style("fill", "#0000FF");
   legend.append("rect").attr("x", -500+5).attr("y", -500+105).attr("width", 17).attr("height", 14).style("fill", "#00FF00");
   legend.append("rect").attr("x", -500+5).attr("y", -500+125).attr("width", 17).attr("height", 14).style("fill", "#610B0B");
