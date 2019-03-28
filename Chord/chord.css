@@ -1,17 +1,17 @@
-svg{
+svg {
     height: 90%;
     background-color: bisque;
 }
 
-div#layout{
+div#layout {
     text-align: center;
 }
 
-div#container{
+div#container {
     margin: auto;
 }
 
-text{
+text {
     font-size: 18px;
     font-family: sans-serif;
 }
