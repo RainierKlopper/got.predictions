@@ -62,7 +62,7 @@ const yScale = d3.scaleLinear()
 const makeYLines = () => d3.axisLeft()
   .scale(yScale)
 
-const makeYLinesRight = () => d3.axisRight().scale(d3.scaleLinear().range([height, 0]).domain([0, 100]))
+//const makeYLinesRight = () => d3.axisRight().scale(d3.scaleLinear().range([height, 0]).domain([0, 100]))
 
 chart.append('g')
   .attr('transform', `translate(0, ${height})`)
